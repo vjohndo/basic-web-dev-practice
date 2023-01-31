@@ -1,0 +1,18 @@
+body {
+    background-color: rgb(200, 255, 252);
+}
+
+hr {
+    border: rgb(131, 131, 131);
+    border-style: dotted none none;
+    width: 8%;
+    border-width: 10px;
+}
+
+img {
+    height: 200px;
+}
+
+h1, h3 {
+    color: rgb(0, 155, 88);
+}
