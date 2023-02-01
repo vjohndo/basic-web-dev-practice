@@ -49,6 +49,32 @@ h3 {
     left: 26vw;
 }
 
+.skill-row {
+    width: 50%;
+    margin: 100px auto;
+    text-align: left;
+    line-height: 2;
+}
+
+.skill-img {
+    width: 25%;
+    border-radius: 100%;
+}
+
+.computer-img {
+    float: left;
+    margin-right: 30px;
+}
+
+.chilli-img {
+    float: right;
+    margin-left: 30px;
+}
+
+.second-skill {
+    clear: both;
+}
+
 .middle-container {
 }
 
