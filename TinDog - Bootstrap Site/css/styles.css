@@ -17,12 +17,14 @@ h2 {
 }
 
 .title-container {
-    padding: 3% 15%;
+    padding: 3% 15% 6% 15%;
 }
 
 #title {
     background-color: #ff4c88;
     color: white;
+    position: relative;
+    z-index: -2;
 }
 
 /* Nav Bar */
@@ -55,9 +57,14 @@ h2 {
 /* Title Image */
 
 .title-image {
-    width: 60%;
-    transform: rotate(25deg);
-    padding: 5% 0%;
+    width: 30%;
+    transform: rotate(18deg);
+    position: absolute;
+    right: 22%;
+}
+
+.landing-download {
+    padding: 2rem 0 5rem 0;
 }
 
 /* Feature Icons */
@@ -92,6 +99,9 @@ h2 {
 
 #features {
     padding: 10% 15%;
+    background-color: #ffffff;
+    position: relative;
+    z-index: 1;
 }
 
 /* Testimonials */
