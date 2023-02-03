@@ -57,10 +57,22 @@ h2 {
 /* Title Image */
 
 .title-image {
-    width: 30%;
+    width: 28rem;
     transform: rotate(18deg);
     position: absolute;
     right: 22%;
+}
+
+@media (max-width: 1220px) {
+#title {
+    text-align: center;
+}
+
+    .title-image {
+    position: static;
+    transform: rotate(0);
+}
+    
 }
 
 .landing-download {
