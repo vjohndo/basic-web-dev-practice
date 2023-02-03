@@ -1,19 +1,21 @@
 body {
     font-family: 'Montserrat', sans-serif;
+    text-align: center;
 }
 
-h1 {
+h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
+}
+
+.container-fluid {
+    padding: 7% 15%
+}
+
+/* Title */
+.big-heading {
     font-size: 3.5rem;
     line-height: 1.5;
     font-weight: 900;
-}
-
-h2 {
-    font-family: "Montserrat";
-    font-weight: bold;
-    font-size: 3rem;
-    line-height: 1.5;
 }
 
 .title-container {
@@ -24,7 +26,40 @@ h2 {
     background-color: #ff4c88;
     color: white;
     position: relative;
-    z-index: -2;
+    text-align: left;
+}
+
+
+/* Title Image */
+.title-image {
+    width: 28rem;
+    transform: rotate(18deg);
+    position: absolute;
+    right: 22%;
+}
+
+@media (max-width: 1310px) {
+    #title {
+        text-align: center;
+    }
+
+    .title-image {
+        width: 18rem;
+        position: static;
+        transform: rotate(0);
+    }
+}
+
+@media (max-width: 991px) {
+    #title {
+        text-align: center;
+    }
+
+    .title-image {
+        width: 18rem;
+        position: static;
+        transform: rotate(0);
+    }
 }
 
 /* Nav Bar */
@@ -54,31 +89,6 @@ h2 {
     margin: 5% 3% 5% 0;
 }
 
-/* Title Image */
-
-.title-image {
-    width: 28rem;
-    transform: rotate(18deg);
-    position: absolute;
-    right: 22%;
-}
-
-@media (max-width: 1220px) {
-#title {
-    text-align: center;
-}
-
-    .title-image {
-    position: static;
-    transform: rotate(0);
-}
-    
-}
-
-.landing-download {
-    padding: 2rem 0 5rem 0;
-}
-
 /* Feature Icons */
 .feature-icon {
     font-family: sans-serif;
@@ -101,6 +111,7 @@ h2 {
 .feature-title {
     font-weight: bold;
     font-size: 1.5rem;
+    line-height: 1.5;
 }
 
 .feature-paragraph {
@@ -118,9 +129,13 @@ h2 {
 
 /* Testimonials */
 #testimonials {
-    text-align: center;
     background-color: #ef8172;
     color: #ffffff;
+}
+
+.testimonial-text {
+    font-size: 3.5rem;
+    font-weight: bold;
 }
 
 .carousel-item {
@@ -136,7 +151,6 @@ h2 {
 /* Press */
 #press {
     padding: 6% 0 3% 0;
-    text-align: center;
     background-color: #ef8172;
     color: #ffffff;
 }
@@ -151,15 +165,40 @@ h2 {
 }
 
 /* Cards */
-.card {
-    height: 25rem;
-}
 
 #pricing {
     padding: 100px;
-    text-align: center;
 }
 
 .pricing-col {
     padding: 3% 2%;
+}
+
+/* CTA */
+#cta {
+    background-color: #ff4c68;
+}
+
+.cta-text {
+    color: white;
+    font-size: 2.5rem;
+    width: 55%;
+    margin: 0 auto;
+    padding-top: 4rem;
+}
+
+/* footer */
+#footer {
+    background-color: white;
+    padding-bottom: 25px;
+    color: #8f8f8f;
+}
+
+.footer-navbar {
+    padding: 50px 0 15px 0;
+}
+
+.footer-nav-item {
+    padding: 0px 7px;
+    font-size: small;
 }
