@@ -96,10 +96,13 @@ h2 {
 
 /* Testimonials */
 #testimonials {
-    padding: 7% 15%;
     text-align: center;
     background-color: #ef8172;
     color: #ffffff;
+}
+
+.carousel-item {
+    padding: 7% 15%;
 }
 
 .testimonial-image {
@@ -110,7 +113,7 @@ h2 {
 
 /* Press */
 #press {
-    padding: 0 7% 3% 0;
+    padding: 6% 0 3% 0;
     text-align: center;
     background-color: #ef8172;
     color: #ffffff;
@@ -123,4 +126,18 @@ h2 {
 
 .carousel-item {
     height: 500px;
+}
+
+/* Cards */
+.card {
+    height: 25rem;
+}
+
+#pricing {
+    padding: 100px;
+    text-align: center;
+}
+
+.pricing-col {
+    padding: 3% 2%;
 }
