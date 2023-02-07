@@ -1,5 +1,6 @@
-function hello() {
-    console.log("This is a function");
+function hello(input) {
+    console.log("This is a function " + input);
 }
 
-hello();
+hello("World");
+
