@@ -15,7 +15,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-    console.log(__dirname + "/signup.html")
     res.sendFile(__dirname + "/signup.html")
 });
 
@@ -58,13 +57,27 @@ app.post("/", (req, res) => {
     }
 
     const request = https.request(url, options, (response) => {
-        response.on("data", (data) => {
-            res.send("SENT!");
-        })
+        
+        console.log(response.statusCode);
+        const statusCode = response.statusCode;
+        
+        if (statusCode === 200) {
+            res.sendFile(__dirname + "/success.html")
+        } else {
+            res.sendFile(__dirname + "/failure.html")
+        }
+    
+        // response.on("data", (data) => {
+        //     res.send(JSON.parse(data));
+        // })
     })
 
     request.write(jsonPayload);
     request.end();
+})
+
+app.post("/failure", (req, res) => {
+    res.redirect("/");
 })
 
 app.listen(PORT, () => {
