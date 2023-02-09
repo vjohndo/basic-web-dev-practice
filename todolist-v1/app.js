@@ -5,6 +5,7 @@ const app = express();
 const port = 3000;
 
 app.set("view engine", "ejs"); // Tells app to use ejs
+app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 
 
