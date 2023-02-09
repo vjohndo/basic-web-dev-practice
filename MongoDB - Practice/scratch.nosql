@@ -1,0 +1,49 @@
+db.products.insert(
+    {
+        _id: 2,
+        name: "Pencil",
+        price: 0.8,
+        stock: 12,
+        reviews: [
+            {
+                authorName: "Mike",
+                rating: 4,
+                review: "Could be better"
+            },
+            {
+                authorName: "Michelle",
+                rating: 4,
+                review: "Is really much better"
+            }
+        ]
+    }
+)
+
+
+db.products.insert(
+    {
+        _id: 3,
+        name: "Rubber",
+        price: 1.30,
+        stock: 43,
+        reviews: [
+            {
+                authorName: "Sally",
+                rating: 5,
+                review: "Best rubber ever!"
+            },
+            {
+                authorName: "John",
+                rating: 5,
+                review: "Awesome rubber!"
+            },
+        ]
+    }
+)
+
+ANOTHER COLLECTION
+
+{
+    orderNumber: 321,
+    productsOrdered: [1, 2, 3]
+}
