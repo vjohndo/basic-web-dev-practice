@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const lodash = require("lodash");
 const mongoose = require("mongoose");
+const e = require("express");
 mongoose.connect("mongodb://127.0.0.1/blogDB", { useNewUrlParser: true });
 
 const homeContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
@@ -18,7 +19,7 @@ const Blog = mongoose.model("Blog", blogSchema);
 
 const app = express();
 
-const posts = [];
+
 
 app.set('view engine', 'ejs');
 
@@ -26,7 +27,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-	res.render("home", {content: homeContent, posts: posts})
+	Blog.find({}, (err, foundBlogs) => {
+		if (!err) {
+			res.render("home", {content: homeContent, posts: foundBlogs})
+		} else {
+			console.log(err);
+		}
+	});
 })
 
 app.get("/about", (req, res) => {
@@ -42,23 +49,25 @@ app.get("/compose", (req, res) => {
 })
 
 app.post("/compose", (req, res) => {
-	const post = {
+	const post = new Blog({
 		title: req.body.postTitle,
-		body: req.body.postBody
-	}
-	console.log(post.body.slice(100));
-	posts.push(post);
-	res.redirect("/");
+		content: req.body.postContent
+	});
+	
+	post.save((err) => {
+		res.redirect("/");
+	})
 })
 
-app.get("/posts/:postName", (req, res) => {
-	const requestTitle = lodash.lowerCase(req.params.postName);
-	posts.forEach((post) => {
-		const storedTitle = lodash.lowerCase(post.title);
-		if (storedTitle === requestTitle) {
-			res.render("post", { post: post });
+app.get("/posts/:postID", (req, res) => {
+	const blogID = req.params.postID;
+	
+	Blog.findById(blogID, (err, foundBlog) => {
+		if (!err) {
+			console.log(foundBlog);
+			res.render("post", { post: foundBlog });
 		} else {
-			console.log("Not a match")
+			console.log(err);
 		}
 	})
 })
