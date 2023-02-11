@@ -18,8 +18,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.set('view engine', 'ejs');
 
-app.get("/", (req, res) => {
-    res.render("index");
+app.get("/articles", (req, res) => {
+    Article.find({}, (err, foundArticles) => {
+        if (!err) {
+            res.json(foundArticles);
+        } else {
+            res.send(err);
+        }
+    })
 });
 
 app.listen(port, () => {
