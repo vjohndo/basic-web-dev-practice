@@ -28,6 +28,33 @@ app.get("/articles", (req, res) => {
     })
 });
 
+app.post("/articles", (req, res) => {
+    const title = req.body.title;
+    const content = req.body.content
+    const newArticle = new Article({
+        title: title,
+        content: content
+    })
+
+    newArticle.save((err) => {
+        if (!err) {
+            res.send("Successfully added a new article.");
+        } else {
+            res.send(err);
+        }
+    });
+})
+
+app.delete("/articles", (req, res) => {
+    Article.deleteMany({}, (err) => {
+        if (!err) {
+            res.send("Successfully deleted all articles.");
+        } else {
+            res.send(err);
+        }
+    })
+})
+
 app.listen(port, () => {
     console.log("Listening on port http://localhost:" + port)
 })
