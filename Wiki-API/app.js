@@ -18,42 +18,69 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.set('view engine', 'ejs');
 
-app.get("/articles", (req, res) => {
-    Article.find({}, (err, foundArticles) => {
-        if (!err) {
-            res.json(foundArticles);
-        } else {
-            res.send(err);
-        }
-    })
-});
+// REQUEST TARGETTING ALL ARTICLES //
 
-app.post("/articles", (req, res) => {
-    const title = req.body.title;
-    const content = req.body.content
-    const newArticle = new Article({
-        title: title,
-        content: content
+app.route("/articles")
+    .get((req, res) => {
+        Article.find({}, (err, foundArticles) => {
+            if (!err) {
+                res.json(foundArticles);
+            } else {
+                res.send(err);
+            }
+        })
+    })
+    .post((req, res) => {
+        const newArticle = new Article({
+            title: req.body.title,
+            content: req.body.content
+        })
+        newArticle.save((err) => {
+            if (!err) {
+                res.send("Successfully added a new article.");
+            } else {
+                res.send(err);
+            }
+        });
+    })
+    .delete((req, res) => {
+        Article.deleteMany({}, (err) => {
+            if (!err) {
+                res.send("Successfully deleted all articles.");
+            } else {
+                res.send(err);
+            }
+        })
     })
 
-    newArticle.save((err) => {
-        if (!err) {
-            res.send("Successfully added a new article.");
-        } else {
-            res.send(err);
-        }
+// REQUEST TARGETTING ALL ARTICLES //
+
+app.route("/articles/:article")
+    .get((req, res) => {
+        const article = req.params.article;
+        Article.findOne({title: article}, (err, foundArtile) => {
+            if (!err) {
+                res.send(foundArtile);
+            } else {
+                res.send(err);
+            }
+        })
+    })
+    .put((req, res) => {
+        console.log('Put route was hit');
+        console.log(req.body.title);
+        Article.replaceOne(
+            {title: req.params.article}, // Params of req to point to correct article
+            {title: req.body.title, content: req.body.content}, // Body of req to provide correct content. As it is replaceOne, will remove any empty fields
+            (err) => {
+                if (!err) {
+                    res.send("Successfully updated article");
+                } else {
+                    res.send(err);
+                }
+            }
+        )
     });
-})
-
-app.delete("/articles", (req, res) => {
-    Article.deleteMany({}, (err) => {
-        if (!err) {
-            res.send("Successfully deleted all articles.");
-        } else {
-            res.send(err);
-        }
-    })
-})
 
 app.listen(port, () => {
     console.log("Listening on port http://localhost:" + port)
