@@ -1,13 +1,20 @@
 const express = require("express");
+const dotenv = require("dotenv").config();
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
+const encrypt = require("mongoose-encryption");
+
 mongoose.connect("mongodb://127.0.0.1:27017/secretsDB", {useNewUrlParser: true})
+
+const secret = process.env.MONGOOSE_CONNECT_SECRET_KEY;
 
 const userSchema = new mongoose.Schema({
     email: String,
     password: String
 });
+
+userSchema.plugin(encrypt, {secret: secret, encryptedFields: ["password"]});
 
 const User = new mongoose.model("User", userSchema);
 
@@ -30,7 +37,7 @@ app.route("/login")
 
         User.findOne({email: username}, (err, foundUser) => {
             if (err) {
-                console.log(err)
+                console.log(err);
             } else if (foundUser && foundUser.password === password) {
                 res.render("secrets");
             }
@@ -44,8 +51,6 @@ app.route("/register")
     .post((req, res) => {
         const email = req.body.username;
         const password = req.body.password;
-        
-        console.log(email, password);
 
         const newUser = new User({
             email: email,
