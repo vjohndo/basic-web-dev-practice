@@ -71,10 +71,36 @@ app.route("/articles/:article")
         console.log(req.body.title);
         Article.replaceOne(
             {title: req.params.article}, // Params of req to point to correct article
-            {title: req.body.title, content: req.body.content}, // Body of req to provide correct content. As it is replaceOne, will remove any empty fields
+            {$set: req.body}, // Body of req to provide correct content. As it is replaceOne, will remove any empty fields
+            (err) => {
+                if (!err) {
+                    res.send("Successfully updated entire article");
+                } else {
+                    res.send(err);
+                }
+            }
+        )
+    })
+    .patch((req, res) => {
+        Article.updateOne(
+            {title: req.params.article}, // Params of req to point to correct article
+            // {title: req.body.title, content: req.body.content}, // Body of req to provide correct content. As it is replaceOne, will remove any empty fields
+            {$set: req.body},
             (err) => {
                 if (!err) {
                     res.send("Successfully updated article");
+                } else {
+                    res.send(err);
+                }
+            }
+        )
+    })
+    .delete((req, res) => {
+        Article.deleteOne(
+            {title: req.params.article}, 
+            (err) => {
+                if (!err) {
+                    res.send(`Successfully deleted ${req.params.article}`);
                 } else {
                     res.send(err);
                 }
