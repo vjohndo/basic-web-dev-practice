@@ -3,9 +3,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
-const session = require("express-session");
+
+const session = require("express-session"); 
 const passport = require("passport");
-const passportLocalMongoose = require("passport-local-mongoose");
+const passportLocalMongoose = require("passport-local-mongoose"); // Passport-local is just a dependency for passport-local-mongoose
 GoogleStrategy = require('passport-google-oauth20').Strategy;
 const findOrCreate = require("mongoose-findorcreate");
 
@@ -18,24 +19,24 @@ app.use(session({
     secret: process.env.COOKIES_SECRET_KEY,
     resave: false,
     saveUninitialized: false
-}));
+})); // Config the session
 
-app.use(passport.initialize()); // Initialise passport
+app.use(passport.initialize()); // Tell app to use and initialise passport
 app.use(passport.session()); // Tell passport deal with sessions
 
+mongoose.set("strictQuery", false);
 mongoose.connect("mongodb://127.0.0.1:27017/secretsDB", { useNewUrlParser: true })
 
 const userSchema = new mongoose.Schema({
     email: String,
     password: String
 });
-userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose); // This is how we add in the Mongoose passport
 userSchema.plugin(findOrCreate);
 
 const User = new mongoose.model("User", userSchema);
 
-passport.use(User.createStrategy());
-
+passport.use(User.createStrategy()); // Strategy is to authenticate using username and password
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -77,20 +78,21 @@ app.route("/login")
             password: req.body.password
         })
 
-        req.login(user, (err) => {
+        req.login(user, (err) => { // This is from the passport package
             if (err) {
                 console.log(err);
             } else {
-                passport.authenticate("local")(req, res, () => {
+                passport.authenticate("local")(req, res, () => { // uses passport
                     res.redirect("/secrets");
-                })
+                });
             }
         })
 
     });
 
+
 app.get("/secrets", (req, res) => {
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated()) { // relying on passport again
         res.render("secrets");
     } else {
         res.redirect("/register");
@@ -102,22 +104,23 @@ app.route("/register")
         res.render("register");
     })
     .post((req, res) => {
-
+        // Method "register" is from passport-local-mongoose
         User.register({username: req.body.username}, req.body.password, (err, user) => {
             if (err) {
                 console.log(err);
                 res.redirect("/register");
             } else {
                 passport.authenticate("local")(req, res, ()=> {
+                    // call back triggered only if callback is successful
                     res.redirect("/secrets");
-                })
+                });
             }
         })
 
     });
 
 app.get("/logout", (req, res) => {
-    req.logout((err) => {
+    req.logout((err) => { // uses passport
         if (err) {
             res.end(err);
         }
