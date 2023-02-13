@@ -3,68 +3,46 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
+
+// Need to require the following:
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
-GoogleStrategy = require('passport-google-oauth20').Strategy;
-const findOrCreate = require("mongoose-findorcreate");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
+// Configure the application
 app.use(session({
     secret: process.env.COOKIES_SECRET_KEY,
     resave: false,
     saveUninitialized: false
 }));
 
+// Configure app to use passport
 app.use(passport.initialize()); // Initialise passport
 app.use(passport.session()); // Tell passport deal with sessions
 
 mongoose.connect("mongodb://127.0.0.1:27017/secretsDB", { useNewUrlParser: true })
 
+// Create the schema but include the passport package
 const userSchema = new mongoose.Schema({
     email: String,
     password: String
 });
 userSchema.plugin(passportLocalMongoose);
-userSchema.plugin(findOrCreate);
 
 const User = new mongoose.model("User", userSchema);
 
+// Configure passport for serialising and deserialising cookies
 passport.use(User.createStrategy());
-
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-//,userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
-passport.use(new GoogleStrategy({
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/secrets"
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
-  }
-));
-
 app.get("/", (req, res) => {
     res.render("home");
-});
-
-app.get("/auth/google", (req, res) => {
-    passport.authenticate("google", {scope: ["profile"]})
-});
-
-app.get("/auth/google/callback", (req, res) => {
-    passport.authenticate("google", { failureRedirect: "/login"}),
-    (req, res) => {
-        res.redirect("/");
-    }
 });
 
 app.route("/login")
@@ -77,6 +55,7 @@ app.route("/login")
             password: req.body.password
         })
 
+        // login is a passport thing.
         req.login(user, (err) => {
             if (err) {
                 console.log(err);
@@ -90,6 +69,8 @@ app.route("/login")
     });
 
 app.get("/secrets", (req, res) => {
+
+    // checking cookies is a passport thing.
     if (req.isAuthenticated()) {
         res.render("secrets");
     } else {
@@ -103,6 +84,7 @@ app.route("/register")
     })
     .post((req, res) => {
 
+        // registering is a passport thing
         User.register({username: req.body.username}, req.body.password, (err, user) => {
             if (err) {
                 console.log(err);
