@@ -3,9 +3,6 @@ import Card from "./Card";
 import contacts from "../contacts";
 
 function App() {
-
-  console.log(contacts);
-
   return (
     <div>
       <h1 className="heading">My Contacts</h1>
