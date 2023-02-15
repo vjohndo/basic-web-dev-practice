@@ -3,9 +3,7 @@ import emojipedia from "./emojipedia";
 var numbers = [3, 56, 2, 48, 5];
 
 //Map - Create a new array by doing something with each item in an array.
-const meaningArray = emojipedia.map( (emoji) => {
-  return emoji.meaning.substring(0, 100);
-})
+const meaningArray = emojipedia.map( (emoji) => emoji.meaning.substring(0, 100));
 
 console.log(meaningArray);
 
